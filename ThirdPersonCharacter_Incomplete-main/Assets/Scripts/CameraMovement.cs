@@ -37,7 +37,7 @@ public class CameraMovement : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (Physics.SphereCast(target.position, 1.5f, transform.position, out hit, distance))
+        if (Physics.SphereCast(target.position, 2, transform.position, out hit, distance))
         {
             if (hit.transform.tag != "Player" && hit.distance > 0.5f && hit.distance < distance)
             {

@@ -18,6 +18,9 @@ public class CharacterAnimator : MonoBehaviour
     public RaycastLookAt cameraLookAt;
     public float lookAtSpeed = 10;
     Vector3 lookat;
+
+    public Transform pistol_target;
+    public Transform pistol;
     private void Start()
     {
         anim = GetComponent<Animator>();
@@ -57,6 +60,34 @@ public class CharacterAnimator : MonoBehaviour
             float maxAngle = Mathf.Acos(lookAtMaxAngle) * Mathf.Rad2Deg;
             forwardLookAt = Quaternion.AngleAxis(angle > 0 ? -maxAngle : maxAngle, axis) * transform.forward;
             lookat = cameraLookAt.transform.position + forwardLookAt * distance;
+        }
+    }
+
+    private void OnAnimatorIK(int layerIndex)
+    {
+        if (pistol_target != null)
+        {
+            anim.SetLookAtWeight(1);
+            anim.SetLookAtPosition(pistol.forward * 100);
+        }
+        else
+        {
+            anim.SetLookAtWeight(0);
+        }
+
+        if (pistol != null)
+        {
+            anim.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
+            anim.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
+
+            anim.SetIKPosition(AvatarIKGoal.RightHand, pistol.position);
+            anim.SetIKRotation(AvatarIKGoal.RightHand, pistol.rotation);
+            
+            anim.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
+            anim.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
+
+            anim.SetIKPosition(AvatarIKGoal.LeftHand, pistol.position);
+            anim.SetIKRotation(AvatarIKGoal.LeftHand, pistol.rotation);
         }
     }
 }
