@@ -23,6 +23,7 @@ public class CharacterMover : MonoBehaviour
     Quaternion velocityRotation;
     Vector3 lastPos;
     Quaternion lastRot;
+
     // Start is called before the first frame update
     void Start()
     {

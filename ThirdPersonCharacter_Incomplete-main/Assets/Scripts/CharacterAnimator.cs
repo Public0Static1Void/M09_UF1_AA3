@@ -39,6 +39,8 @@ public class CharacterAnimator : MonoBehaviour
         FixLookat();
 
         gunPivot.LookAt(lookat);
+
+        transform.position = new Vector3(transform.parent.position.x, transform.parent.position.y + 1, transform.parent.position.z);
     }
 
     private void FixLookat()
