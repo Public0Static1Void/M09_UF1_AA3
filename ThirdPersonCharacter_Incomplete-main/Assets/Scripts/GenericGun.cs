@@ -26,8 +26,8 @@ public class GenericGun : MonoBehaviour
 
     public RectTransform realAim_rect;
 
-    float delta = 0;
-    bool shooting = false;
+    public float delta = 0;
+    public bool shooting = false;
     private void Start()
     {
         originalPosition = transform.localPosition;
@@ -41,21 +41,32 @@ public class GenericGun : MonoBehaviour
 
         if (automatic)
         {
-            if (Input.GetKey(KeyCode.Mouse0) && delta < fireRate && !shooting)
+            if (Input.GetKey(KeyCode.Mouse0) && delta == 0 && clipCurrent > 0)
             {
+                shooting = true;
                 Fire();
             }
         }
         else
         {
-            if (Input.GetKeyDown(KeyCode.Mouse0) && delta < fireRate && !shooting)
+            if (Input.GetKeyDown(KeyCode.Mouse0) && delta == 0 && clipCurrent > 0)
+            {
+                shooting = true;
                 Fire();
+            }
         }
             
-        if (delta >= fireRate && shooting)
+        if (delta >= fireRate && clipCurrent > 0)
         {
-            delta = 0;
             shooting = false;
+            delta = 0;
+        }
+        else if (delta >= reloadTime && clipCurrent == 0)
+        {
+            shooting = false;
+            clipCurrent = clipMax;
+            delta = 0;
+
         }
 
         if (shooting)
@@ -79,8 +90,7 @@ public class GenericGun : MonoBehaviour
             clipCurrent--;
         else
         {
-            if (!shooting)
-                StartCoroutine(Reload());
+            StartCoroutine(Reload());
             return;
         }
 
@@ -100,7 +110,6 @@ public class GenericGun : MonoBehaviour
     {
         shooting = true;
         yield return new WaitForSeconds(reloadTime);
-        shooting = false;
         clipCurrent = clipMax;
     }
 }

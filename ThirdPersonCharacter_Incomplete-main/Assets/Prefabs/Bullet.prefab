@@ -5210,8 +5210,8 @@ MonoBehaviour:
     m_Bits: 55
   collisionForceMultiplier: 1
   radius: 0.1
-  spawnOnCollide: {fileID: 802939741174777362, guid: 5711a24ec9f4fed488a8630eae21dde6, type: 3}
   rb: {fileID: 0}
+  bulletHole: {fileID: 802939741174777362, guid: 5711a24ec9f4fed488a8630eae21dde6, type: 3}
 --- !u!96 &7661018759388145756
 TrailRenderer:
   serializedVersion: 3
