@@ -17461,6 +17461,7 @@ MonoBehaviour:
   rotationRecover: 20
   knockbackPosition: {x: 0.01, y: 0.1, z: -0.2}
   knockbackRotation: {x: 35, y: 5, z: 5}
+  realAim_rect: {fileID: 1591535079}
 --- !u!54 &1780671018
 Rigidbody:
   m_ObjectHideFlags: 0

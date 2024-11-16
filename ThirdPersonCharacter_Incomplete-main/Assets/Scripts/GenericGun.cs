@@ -23,6 +23,8 @@ public class GenericGun : MonoBehaviour
     public Vector3 knockbackRotation;
     Vector3 originalPosition;
     Quaternion originalRotation;
+
+    public RectTransform realAim_rect;
     private void Start()
     {
         originalPosition = transform.localPosition;
@@ -33,6 +35,18 @@ public class GenericGun : MonoBehaviour
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, positionRecover * Time.deltaTime);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, rotationRecover * Time.deltaTime);
+    }
+    void FixedUpdate()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, transform.forward, out hit))
+        {
+            if (hit.transform.tag != "Player")
+            {
+                realAim_rect.position = Camera.main.WorldToScreenPoint(hit.transform.position);
+            }
+        }
     }
     public void Fire()
     {
