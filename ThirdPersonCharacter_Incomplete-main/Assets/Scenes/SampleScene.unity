@@ -8977,9 +8977,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1089316526}
-  cameraSpeed: 8
-  distance: 5
-  offset: {x: 0, y: 1, z: -0.5}
+  cameraSpeed: 12
+  distance: 3
+  offset: {x: 0, y: 1.5, z: -1}
   current_distance: 0
 --- !u!1 &1050062902
 GameObject:
@@ -17451,7 +17451,7 @@ MonoBehaviour:
   clipCurrent: 30
   automatic: 1
   fireRate: 0.1
-  reloadTime: 0.5
+  reloadTime: 1
   onFire:
     m_PersistentCalls:
       m_Calls: []
@@ -17462,6 +17462,7 @@ MonoBehaviour:
   knockbackPosition: {x: 0.01, y: 0.1, z: -0.2}
   knockbackRotation: {x: 35, y: 5, z: 5}
   realAim_rect: {fileID: 1591535079}
+  shooting: 0
 --- !u!54 &1780671018
 Rigidbody:
   m_ObjectHideFlags: 0

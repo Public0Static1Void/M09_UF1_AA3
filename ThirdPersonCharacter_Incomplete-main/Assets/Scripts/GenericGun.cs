@@ -25,6 +25,9 @@ public class GenericGun : MonoBehaviour
     Quaternion originalRotation;
 
     public RectTransform realAim_rect;
+
+    float delta = 0;
+    bool shooting = false;
     private void Start()
     {
         originalPosition = transform.localPosition;
@@ -35,6 +38,28 @@ public class GenericGun : MonoBehaviour
     {
         transform.localPosition = Vector3.Lerp(transform.localPosition, originalPosition, positionRecover * Time.deltaTime);
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, rotationRecover * Time.deltaTime);
+
+        if (automatic)
+        {
+            if (Input.GetKey(KeyCode.Mouse0) && delta < fireRate && !shooting)
+            {
+                Fire();
+            }
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Mouse0) && delta < fireRate && !shooting)
+                Fire();
+        }
+            
+        if (delta >= fireRate && shooting)
+        {
+            delta = 0;
+            shooting = false;
+        }
+
+        if (shooting)
+            delta += Time.deltaTime;
     }
     void FixedUpdate()
     {
@@ -44,12 +69,23 @@ public class GenericGun : MonoBehaviour
         {
             if (hit.transform.tag != "Player")
             {
-                realAim_rect.position = Camera.main.WorldToScreenPoint(hit.transform.position);
+                realAim_rect.position = Camera.main.WorldToScreenPoint(hit.point);
             }
         }
     }
     public void Fire()
     {
+        if (clipCurrent > 0)
+            clipCurrent--;
+        else
+        {
+            if (!shooting)
+                StartCoroutine(Reload());
+            return;
+        }
+
+        shooting = true;
+
         Destroy(Instantiate(bullet, firePoint.position, firePoint.rotation), 10);
         onFire.Invoke();
         StartCoroutine(Knockback_Corutine());
@@ -59,5 +95,12 @@ public class GenericGun : MonoBehaviour
         yield return null;
         transform.localPosition -= new Vector3(Random.Range(-knockbackPosition.x, knockbackPosition.x), Random.Range(0, knockbackPosition.y), Random.Range(-knockbackPosition.z, -knockbackPosition.z * .5f));
         transform.localEulerAngles -= new Vector3(Random.Range(knockbackRotation.x * 0.5f, knockbackRotation.x), Random.Range(-knockbackRotation.y, knockbackRotation.y), Random.Range(-knockbackRotation.z, knockbackRotation.z));
+    }
+    IEnumerator Reload()
+    {
+        shooting = true;
+        yield return new WaitForSeconds(reloadTime);
+        shooting = false;
+        clipCurrent = clipMax;
     }
 }
